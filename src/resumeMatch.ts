@@ -9,9 +9,15 @@ export interface MatchResult {
   matched: string[];
   missing: string[];
   ok: boolean;
+  /** JD is too short to score reliably — coverage of a stub reads as false confidence. */
+  thinJd: boolean;
 }
 
 const MIN_TOKENS = 8;
+// Below ~60 meaningful (non-stopword, non-filler) JD tokens, the top-terms pool is so
+// small that coverage percentages look confident while measuring almost nothing — a
+// pasted teaser scores like a full posting. Full JDs typically carry 150+.
+const THIN_JD_TOKENS = 60;
 const TOP_JD_TERMS = 40;
 const STRONG = 75;
 const PARTIAL = 45;
@@ -106,7 +112,8 @@ function isMatched(term: ScoredTerm, resumeSet: Set<string>): boolean {
 }
 
 export function scoreMatch(resumeText: string, jdText: string): MatchResult {
-  const empty: MatchResult = { score: 0, band: "weak", matched: [], missing: [], ok: false };
+  const thinJd = tokenize(jdText).filter((t) => !isExcluded(t)).length < THIN_JD_TOKENS;
+  const empty: MatchResult = { score: 0, band: "weak", matched: [], missing: [], ok: false, thinJd };
   if (tokenize(resumeText).length < MIN_TOKENS || tokenize(jdText).length < MIN_TOKENS) {
     return empty;
   }
@@ -137,5 +144,6 @@ export function scoreMatch(resumeText: string, jdText: string): MatchResult {
     matched: matched.sort((a, b) => b.weight - a.weight).map((m) => m.display),
     missing: missing.sort((a, b) => b.weight - a.weight).map((m) => m.display),
     ok: true,
+    thinJd,
   };
 }

@@ -7,7 +7,7 @@
   "main": "src/index.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/searchsteward/searchsteward"
+    "url": "https://github.com/searchsteward/resume-match"
   },
   "homepage": "https://searchsteward.com/tools/resume-match",
   "keywords": ["resume", "ats", "job-search", "keyword-matching", "ghost-jobs"],

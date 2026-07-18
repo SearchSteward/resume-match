@@ -26,11 +26,16 @@ read a résumé:
 import { scoreMatch } from "./src/resumeMatch";
 
 const r = scoreMatch(resumeText, jdText);
-// { score: 82, band: "strong", matched: [...], missing: [...], ok: true }
+// { score: 82, band: "strong", matched: [...], missing: [...], ok: true, thinJd: false }
 ```
 
 Bands: `strong` ≥ 75, `partial` ≥ 45, else `weak`. The calibration suite in
 `tests/` pins real-world fixtures so the score can't silently inflate.
+
+`thinJd: true` means the job description carried fewer than 60 meaningful
+tokens — a pasted teaser, not a full posting. The score is still computed,
+but treat it as low-confidence and ask for the full text. (Coverage of a
+stub reads as false confidence; flagging it is the honest move.)
 
 ## `checkGhostJob(postingText)`
 

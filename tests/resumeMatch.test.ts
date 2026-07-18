@@ -84,3 +84,25 @@ describe("scoreMatch calibration", () => {
     expect(r.score).toBeLessThan(25);
   });
 });
+
+describe("thin JD flag", () => {
+  it("flags a pasted teaser as thinJd while still scoring it", () => {
+    // A short teaser scores like a full posting — top-terms coverage of almost
+    // nothing looks confident. The flag is the honesty valve, not a gate.
+    const r = scoreMatch(STRONG_RESUME, JD);
+    expect(r.ok).toBe(true);
+    expect(r.thinJd).toBe(true);
+  });
+
+  it("does not flag a full-length JD", () => {
+    const r = scoreMatch(STRONG_RESUME, SENIOR_BA_JD);
+    expect(r.ok).toBe(true);
+    expect(r.thinJd).toBe(false);
+  });
+
+  it("sets thinJd on the too-short early return too", () => {
+    const r = scoreMatch(STRONG_RESUME, "hi");
+    expect(r.ok).toBe(false);
+    expect(r.thinJd).toBe(true);
+  });
+});
