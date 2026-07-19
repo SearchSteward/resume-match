@@ -1,5 +1,7 @@
 # @searchsteward/match-tools
 
+[![tests](https://github.com/searchsteward/resume-match/actions/workflows/tests.yml/badge.svg)](https://github.com/searchsteward/resume-match/actions/workflows/tests.yml) [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 The exact TypeScript that powers SearchSteward's free, no-signup tools:
 
 - **[Résumé ↔ Job-Description Matcher](https://searchsteward.com/tools/resume-match)** — `scoreMatch()`
